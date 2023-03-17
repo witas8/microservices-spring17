@@ -1,0 +1,33 @@
+global:
+  #polls an app for every X (10) sec for metrics:
+  scrape_interval:     10s
+  #evaluate internal rules (there is no any defined in app):
+  evaluation_interval: 10s
+
+scrape_configs:
+  #job name as a service name:
+  - job_name: 'product_service'
+    #default URL of:
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['product-service:8080']
+        labels:
+          application: 'Product Service Application'
+  - job_name: 'order_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['order-service:8080']
+        labels:
+          application: 'Order Service Application'
+  - job_name: 'inventory_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['inventory-service:8080']
+        labels:
+          application: 'Inventory Service Application'
+  - job_name: 'notification_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['notification-service:8080']
+        labels:
+          application: 'Notification Service Application'

@@ -1,0 +1,25 @@
+# to improve the process of building the docker files to make size lower
+# use Multi State Builds mechanism:
+FROM eclipse-temurin:17.0.4.1_1-jre as builder
+WORKDIR extracted
+ADD target/*.jar app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+FROM eclipse-temurin:17.0.4.1_1-jre
+WORKDIR application
+#define layers from spring boot jar and store those layers in the work direction called extracted
+COPY --from=builder extracted/dependencies/ ./
+COPY --from=builder extracted/spring-boot-loader/ ./
+COPY --from=builder extracted/snapshot-dependencies/ ./
+#everything from src:
+COPY --from=builder extracted/application/ ./
+EXPOSE 8080
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+
+
+### Installing:
+# to build a dockerfile.layered:
+# cd .\api-gateway\
+# -t stands for tag name, dot "." stands for present directory (location)
+# -f stands for defining what file is the configuration one for creating an image
+# docker build -t apigateway-layered -f Dockerfile.layered .
