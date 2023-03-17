@@ -1,0 +1,7 @@
+# Project exclude paths
+/api-gateway/target/
+/discovery-server/target/
+/inventory-service/target/
+/notification-service/target/
+/order-service/target/
+/product-service/target/
