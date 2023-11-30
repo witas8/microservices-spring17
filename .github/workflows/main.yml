@@ -1,0 +1,20 @@
+name: Manual Trigger Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+
+jobs:
+  manual-trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run Manual Trigger Workflow
+      run: echo "Running manual trigger workflow for environment ${{ github.event.inputs.environment }}"
